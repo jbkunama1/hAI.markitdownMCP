@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hAI · MarkItDown MCP</title>
+    <meta name="description" content="MarkItDown MCP Server als Portainer Stack für das highfishNetwork – Konvertiert PDFs, Office-Dokumente, Bilder, Audio und Webseiten in Markdown für KI-Clients">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 0 40px;
+            color: white;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 25px;
+            color: white;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 40px 0 20px 0;
+            color: #34495e;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #3498db;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .feature-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .supported-formats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .format-badge {
+            background: #3498db;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .installation {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+        
+        .installation h3 {
+            margin-bottom: 20px;
+            color: #ecf0f1;
+        }
+        
+        .code-block {
+            background: #34495e;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .quick-start {
+            background: #27ae60;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .quick-start h3 {
+            margin-bottom: 15px;
+        }
+        
+        .quick-start code {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .tech-item {
+            text-align: center;
+            padding: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            min-width: 120px;
+        }
+        
+        .tech-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+        
+        .tech-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            background: rgba(0,0,0,0.2);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">hAI · MarkItDown MCP</div>
+            <div class="subtitle">MarkItDown MCP Server als Portainer Stack für das highfishNetwork</div>
+            <div class="badges">
+                <div class="badge">🔧 Docker</div>
+                <div class="badge">🐳 Portainer</div>
+                <div class="badge">📄 PDF</div>
+                <div class="badge">📝 Office</div>
+                <div class="badge">🖼️ Images</div>
+                <div class="badge">🎵 Audio</div>
+                <div class="badge">🌐 Web</div>
+                <div class="badge">🤖 MCP</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <main class="main-content">
+            <h1>Multi-Format zu Markdown Konvertierung</h1>
+            <p>Der hAI · MarkItDown MCP Server konvertiert nahtlos verschiedene Dateiformate in Markdown, perfekt für die Integration in KI-Clients und Automatisierungsszenarien.</p>
+
+            <h2>Supported Formate</h2>
+            <div class="supported-formats">
+                <div class="format-badge">📄 PDFs</div>
+                <div class="format-badge">📝 Word</div>
+                <div class="format-badge">📊 Excel</div>
+                <div class="format-badge">📽️ PowerPoint</div>
+                <div class="format-badge">🖼️ JPEG</div>
+                <div class="format-badge">🖼️ PNG</div>
+                <div class="format-badge">🎨 SVG</div>
+                <div class="format-badge">🎵 MP3</div>
+                <div class="format-badge">🎵 WAV</div>
+                <div class="format-badge">🌐 HTML</div>
+                <div class="format-badge">📋 CSV</div>
+                <div class="format-badge">📄 JSON</div>
+            </div>
+
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-title">Multi-Format Support</div>
+                    <div class="feature-desc">Konvertiert 10+ Formate in qualitativ hochwertiges Markdown mit Layout-Erhalt</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🐳</div>
+                    <div class="feature-title">Containerisiert</div>
+                    <div class="feature-desc">Optimiert für Docker/Portainer-Deployments in der HighFish-Infrastruktur</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-title">MCP-kompatibel</div>
+                    <div class="feature-desc">Nahtlose Integration in KI-Clients wie Copilot und andere MCP-fähige Tools</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Schnell & Effizient</div>
+                    <div class="feature-desc">Optimierte Konvertierung mit Caching und Batch-Verarbeitung</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-title">Sicher</div>
+                    <div class="feature-desc">Läuft als non-root Container mit minimalen Abhängigkeiten</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-title">Automatisiertes Update</div>
+                    <div class="feature-desc">Tägliche Prüfung auf neue Upstream-Versionen mit automatischen Issues</div>
+                </div>
+            </div>
+
+            <div class="quick-start">
+                <h3>🚀 Schnellstart</h3>
+                <p>Starten Sie den MarkItDown MCP Server in Sekunden:</p>
+                <div class="code-block">
+git clone https://github.com/jbkunama1/hAI.markitdownMCP.git<br>
+cd hAI.markitdownMCP<br>
+docker compose up -d
+                </div>
+                <p>Zugriff: <code>http://localhost:3333/mcp</code></p>
+            </div>
+
+            <h2>Technologie Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <div class="tech-icon">🐍</div>
+                    <div class="tech-name">Python 3.12</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📦</div>
+                    <div class="tech-name">MarkItDown MCP</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🐳</div>
+                    <div class="tech-name">Docker</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">⚓</div>
+                    <div class="tech-name">Portainer</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🌐</div>
+                    <div class="tech-name">MCP Protocol</div>
+                </div>
+            </div>
+
+            <div class="installation">
+                <h3>📋 Portainer Installation</h3>
+                <p>Fügen Sie den MarkItDown MCP Stack zu Ihrem Portainer hinzu:</p>
+                <div class="code-block">
+Repository: https://github.com/jbkunama1/hAI.markitdownMCP.git<br>
+Reference: main<br>
+Compose Path: docker-compose.yml<br>
+Port: 3333
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/jbkunama1/hAI.markitdownMCP" class="footer-link">📁 GitHub</a>
+                <a href="https://github.com/jbkunama1/hAI.markitdownMCP/blob/main/README.md" class="footer-link">📖 README</a>
+                <a href="https://github.com/jbkunama1/hAI.markitdownMCP/blob/main/LICENSE" class="footer-link">⚖️ License</a>
+            </div>
+            <p>&copy; 2026 hAI · HighFish Infrastructure</p>
+        </div>
+    </footer>
+</body>
+</html>

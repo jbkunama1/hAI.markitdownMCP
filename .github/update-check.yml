@@ -1,0 +1,92 @@
+name: Daily Upstream Update Check
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-upstream:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get installed markitdown-mcp version
+        id: current
+        run: |
+          VERSION=$(python - <<'PY'
+          import re
+          text = open("Dockerfile").read()
+          match = re.search(r"markitdown-mcp==([0-9.]+)", text)
+          print(match.group(1) if match else "latest")
+          PY
+          )
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Get latest upstream version
+        id: latest
+        run: |
+          VERSION=$(curl -fsSL https://pypi.org/pypi/markitdown-mcp/json | jq -r '.info.version')
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Compare versions
+        id: compare
+        run: |
+          CURRENT="${{ steps.current.outputs.version }}"
+          LATEST="${{ steps.latest.outputs.version }}"
+
+          if [ "$CURRENT" = "latest" ] || [ "$CURRENT" != "$LATEST" ]; then
+            echo "update_available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "update_available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create or update update issue
+        if: steps.compare.outputs.update_available == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `Update verfügbar: markitdown-mcp ${{ steps.latest.outputs.version }}`;
+            const body = [
+              `**Neue Upstream-Version:** \`${{ steps.latest.outputs.version }}\``,
+              ``,
+              `**Aktuell im Dockerfile:** \`${{ steps.current.outputs.version }}\``,
+              ``,
+              `### Nächste Schritte`,
+              `1. \`Dockerfile\` auf \`markitdown-mcp==${{ steps.latest.outputs.version }}\` setzen`,
+              `2. Commit auf \`main\` pushen`,
+              `3. Workflow \`Build & Push GHCR Image\` prüfen`,
+              `4. Portainer-Stack auf das neue GHCR-Image aktualisieren`
+            ].join("\n");
+
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              labels: "upstream-update"
+            });
+
+            const existing = issues.data.find(i => i.title === title);
+
+            if (existing) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ["upstream-update"]
+              });
+            }

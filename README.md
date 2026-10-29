@@ -2,7 +2,22 @@
 
 > MarkItDown MCP Server als Portainer Stack für das `highfishNetwork` – Konvertiert PDFs, Office-Dokumente, Bilder, Audio und Webseiten in Markdown für KI-Clients.
 
-![HighFish MarkItDown Logo](logo.png)
+![HighFish MarkItDown Logo](logo.jpg)
+
+---
+
+<div align="center">
+
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Portainer](https://img.shields.io/badge/Portainer-13AEDB?style=for-the-badge&logo=portainer&logoColor=white)
+![PDF](https://img.shields.io/badge/PDF-FF0000?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)
+![Office](https://img.shields.io/badge/Microsoft_Office-D83B01?style=for-the-badge&logo=microsoft-office&logoColor=white)
+![Images](https://img.shields.io/badge/Images-FF6B35?style=for-the-badge&logo=canva&logoColor=white)
+![Audio](https://img.shields.io/badge/Audio-FF6347?style=for-the-badge&logo=audio-engineer&logoColor=white)
+![Web](https://img.shields.io/badge/Web-000000?style=for-the-badge&logo=world-wide-web&logoColor=white)
+![MCP](https://img.shields.io/badge/MCP-0066CC?style=for-the-badge&logo=github&logoColor=white)
+
+</div>
 
 ---
 

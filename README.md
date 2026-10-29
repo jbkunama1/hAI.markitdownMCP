@@ -2,7 +2,7 @@
 
 > MarkItDown MCP Server als Portainer Stack für das `highfishNetwork` – Konvertiert PDFs, Office-Dokumente, Bilder, Audio und Webseiten in Markdown für KI-Clients.
 
-![HighFish MarkItDown Logo](logo.png)
+![HighFish MarkItDown Logo](logo.jpg)
 
 ---
 

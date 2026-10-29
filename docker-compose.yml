@@ -1,0 +1,16 @@
+services:
+  markitdown:
+    image: ghcr.io/jbkunama1/hai-markitdownmcp:latest
+    container_name: hAI-markitdownMCP
+    restart: unless-stopped
+    ports:
+      - "3333:3001"
+    environment:
+      - MARKITDOWN_HOST=0.0.0.0
+      - MARKITDOWN_PORT=3001
+    networks:
+      - highfishNetwork
+
+networks:
+  highfishNetwork:
+    external: true
